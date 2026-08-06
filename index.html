@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Website Bookmark Manager</title>
+
+
+<style>
+
+/* PART 2 CSS WILL BE ADDED HERE */
+/* ===== RESET ===== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+    background:#eaf2ff;
+    color:#1e293b;
+
+}
+
+
+
+/* ===== LOADER ===== */
+
+
+#loader{
+
+    position:fixed;
+    inset:0;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+
+}
+
+
+.spinner{
+
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    border:7px solid #dbeafe;
+    border-top:7px solid #2563eb;
+    animation:rotate 1s linear infinite;
+
+}
+
+
+@keyframes rotate{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
+
+
+/* ===== LOGIN ===== */
+
+
+#loginPage{
+
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#eaf2ff;
+
+}
+
+
+
+login-box,
+.login-box{
+
+width:380px;
+background:white;
+padding:40px;
+border-radius:30px;
+text-align:center;
+box-shadow:0 20px 50px rgba(0,0,0,.15);
+
+}
+
+
+
+.login-image{
+
+width:130px;
+height:130px;
+margin-bottom:20px;
+
+}
+
+
+
+.login-box h1{
+
+color:#2563eb;
+margin-bottom:10px;
+
+}
+
+
+
+.login-box p{
+
+color:#64748b;
+margin-bottom:20px;
+
+}
+
+
+
+.login-box input{
+
+width:100%;
+padding:14px;
+border-radius:14px;
+border:1px solid #cbd5e1;
+margin-bottom:15px;
+font-size:16px;
+
+}
+
+
+
+.login-box input:focus{
+
+outline:none;
+border-color:#2563eb;
+
+}
+
+
+
+.login-btn{
+
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#2563eb,#06b6d4);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+
+}
+
+
+
+#error{
+
+color:red;
+margin-top:15px;
+
+}
+
+
+
+
+
+
+/* ===== MAIN ===== */
+
+
+#mainPage{
+
+display:none;
+
+}
+
+
+
+.container{
+
+max-width:1200px;
+margin:30px auto;
+padding:30px;
+background:white;
+border-radius:30px;
+box-shadow:0 15px 40px rgba(15,23,42,.12);
+
+}
+
+
+
+.header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+
+}
+
+
+
+.header h1{
+
+color:#2563eb;
+font-size:32px;
+
+}
+
+
+
+
+button{
+
+border:none;
+cursor:pointer;
+border-radius:12px;
+font-weight:bold;
+transition:.3s;
+
+}
+
+
+button:hover{
+
+transform:translateY(-3px);
+
+}
+
+
+
+
+.logout{
+
+background:linear-gradient(135deg,#ef4444,#f97316);
+color:white;
+padding:12px 25px;
+
+}
+
+
+
+
+
+
+
+/* ===== INPUT ===== */
+
+
+.input-group{
+
+display:grid;
+grid-template-columns:2fr 3fr 2fr 1.2fr;
+gap:15px;
+margin-bottom:25px;
+
+}
+
+
+
+input,
+select{
+
+padding:14px;
+border-radius:12px;
+border:1px solid #cbd5e1;
+background:#f8fafc;
+font-size:15px;
+
+}
+
+
+
+input:focus,
+select:focus{
+
+outline:none;
+border-color:#2563eb;
+box-shadow:0 0 10px rgba(37,99,235,.2);
+
+}
+
+
+
+.save{
+
+background:linear-gradient(135deg,#2563eb,#06b6d4);
+color:white;
+
+}
+
+
+
+
+
+
+/* ===== SEARCH ===== */
+
+
+.search-area{
+
+display:flex;
+gap:15px;
+margin-bottom:25px;
+
+}
+
+
+
+.search-area input{
+
+flex:1;
+
+}
+
+
+
+
+
+
+
+/* ===== COUNT ===== */
+
+
+#totalCount{
+
+font-size:16px;
+font-weight:bold;
+color:#475569;
+margin-bottom:20px;
+
+}
+
+
+
+
+
+
+
+/* ===== WEBSITE CATEGORY ===== */
+
+
+.categoryBox{
+
+background:#f8fbff;
+border-left:6px solid #2563eb;
+padding:20px;
+border-radius:20px;
+margin-bottom:25px;
+
+}
+
+
+
+.categoryBox h3{
+
+color:#2563eb;
+margin-bottom:15px;
+
+}
+
+
+
+.websiteRow{
+
+display:flex;
+flex-wrap:wrap;
+gap:20px;
+
+}
+
+
+
+
+
+
+/* ===== CARD ===== */
+
+
+.card{
+
+width:230px;
+background:white;
+padding:20px;
+border-radius:20px;
+border:1px solid #dbeafe;
+text-align:center;
+box-shadow:0 8px 20px rgba(37,99,235,.08);
+transition:.3s;
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(37,99,235,.18);
+
+}
+
+
+
+.card a{
+
+display:block;
+text-decoration:none;
+color:#2563eb;
+font-size:18px;
+font-weight:bold;
+margin-bottom:15px;
+word-break:break-word;
+
+}
+
+
+
+
+.edit{
+
+background:#f59e0b;
+color:white;
+padding:8px 15px;
+margin-right:5px;
+
+}
+
+
+
+.delete{
+
+background:#ef4444;
+color:white;
+padding:8px 15px;
+
+}
+
+
+
+
+
+/* ===== PRINT ===== */
+
+
+.print-area{
+
+text-align:center;
+margin-top:30px;
+
+}
+
+
+
+.print{
+
+background:#7c3aed;
+color:white;
+padding:14px 30px;
+
+}
+
+
+
+
+
+
+
+/* ===== MOBILE ===== */
+
+
+@media(max-width:768px){
+
+
+.header{
+
+flex-direction:column;
+gap:20px;
+
+}
+
+
+.input-group{
+
+grid-template-columns:1fr;
+
+}
+
+
+.search-area{
+
+flex-direction:column;
+
+}
+
+
+.card{
+
+width:100%;
+
+}
+
+
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<!-- ================= LOADER ================= -->
+
+<div id="loader">
+
+<div class="spinner"></div>
+
+</div>
+
+
+
+
+
+<!-- ================= LOGIN PAGE ================= -->
+
+
+<div id="loginPage">
+
+
+<div class="login-box">
+
+
+<img
+
+class="login-image"
+
+src="https://cdn-icons-png.flaticon.com/512/2919/2919592.png"
+
+alt="Login Image">
+
+
+
+<h1>
+
+Welcome
+
+</h1>
+
+
+<p>
+
+Website Bookmark Manager
+
+</p>
+
+
+
+<input
+
+type="password"
+
+id="password"
+
+placeholder="Enter Password">
+
+
+
+<button
+
+class="login-btn"
+
+onclick="login()">
+
+Login
+
+</button>
+
+
+
+<p id="error"></p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ================= MAIN PAGE ================= -->
+
+
+<div id="mainPage">
+
+
+<div class="container">
+
+
+
+
+
+<div class="header">
+
+
+<h1>
+
+🌐 Bookmark Manager
+
+</h1>
+
+
+
+<button
+
+class="logout"
+
+onclick="logout()">
+
+Logout
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ADD WEBSITE -->
+
+
+<div class="input-group">
+
+
+
+<input
+
+id="name"
+
+placeholder="Website Name">
+
+
+
+
+
+<input
+
+id="url"
+
+placeholder="Website URL">
+
+
+
+
+
+
+<select id="category">
+
+
+<option>Banking</option>
+
+<option>Education</option>
+
+<option>Movies</option>
+
+<option>Shopping</option>
+
+<option>Social Media</option>
+
+<option>AI Tools</option>
+
+<option>Government</option>
+
+<option>Other</option>
+
+
+</select>
+
+
+
+
+
+<button
+
+class="save"
+
+onclick="saveWebsite()">
+
+💾 Save Website
+
+</button>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- SEARCH AREA -->
+
+
+<div class="search-area">
+
+
+<input
+
+id="search"
+
+placeholder="🔍 Search Website"
+
+onkeyup="displayData()">
+
+
+
+
+
+
+<select
+
+id="filter"
+
+onchange="displayData()">
+
+
+
+<option value="All">
+
+All Categories
+
+</option>
+
+
+<option>Banking</option>
+
+<option>Education</option>
+
+<option>Movies</option>
+
+<option>Shopping</option>
+
+<option>Social Media</option>
+
+<option>AI Tools</option>
+
+<option>Government</option>
+
+<option>Other</option>
+
+
+</select>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- COUNT -->
+
+
+<div id="totalCount">
+
+Total Websites : 0
+
+</div>
+
+
+
+
+
+
+
+<!-- WEBSITE LIST -->
+
+
+<div id="categoryContainer">
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PRINT -->
+
+
+<div class="print-area">
+
+
+<button
+
+class="print"
+
+onclick="window.print()">
+
+🖨 Print Websites
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+/* PART 3 JAVASCRIPT WILL BE ADDED HERE */
+// =============== DATA ===============
+
+let websites = JSON.parse(localStorage.getItem("websites")) || [];
+
+let editIndex = -1;
+
+
+
+
+// =============== SAVE WEBSITE ===============
+
+
+function saveWebsite(){
+
+
+let name = document.getElementById("name").value.trim();
+
+let url = document.getElementById("url").value.trim();
+
+let category = document.getElementById("category").value;
+
+
+
+if(name==="" || url===""){
+
+alert("Please fill all fields");
+
+return;
+
+}
+
+
+
+if(!url.startsWith("http://") && !url.startsWith("https://")){
+
+url="https://"+url;
+
+}
+
+
+
+let website={
+
+name:name,
+
+url:url,
+
+category:category
+
+};
+
+
+
+if(editIndex===-1){
+
+websites.push(website);
+
+}
+
+else{
+
+websites[editIndex]=website;
+
+editIndex=-1;
+
+}
+
+
+
+
+localStorage.setItem(
+
+"websites",
+
+JSON.stringify(websites)
+
+);
+
+
+
+clearForm();
+
+displayData();
+
+
+}
+
+
+
+
+
+
+
+// =============== DISPLAY ===============
+
+
+function displayData(){
+
+
+let search=document
+.getElementById("search")
+.value
+.toLowerCase();
+
+
+
+let filter=document
+.getElementById("filter")
+.value;
+
+
+
+let categories={};
+
+
+
+websites.forEach(function(site,index){
+
+
+
+if(
+
+site.name.toLowerCase().includes(search)
+
+&&
+
+(filter==="All" || site.category===filter)
+
+){
+
+
+if(!categories[site.category]){
+
+categories[site.category]=[];
+
+}
+
+
+
+categories[site.category].push({
+
+index:index,
+
+name:site.name,
+
+url:site.url
+
+});
+
+
+}
+
+
+});
+
+
+
+
+let html="";
+
+let total=0;
+
+
+
+Object.keys(categories)
+.sort()
+.forEach(function(category){
+
+
+
+categories[category]
+.sort((a,b)=>
+
+a.name.localeCompare(b.name)
+
+);
+
+
+
+total += categories[category].length;
+
+
+
+html += `
+
+
+<div class="categoryBox">
+
+
+<h3>${category}</h3>
+
+
+<div class="websiteRow">
+
+
+
+${categories[category].map(site=>`
+
+
+<div class="card">
+
+
+<a href="${site.url}" target="_blank">
+
+${site.name}
+
+</a>
+
+
+
+<button
+
+class="edit"
+
+onclick="editWebsite(${site.index})">
+
+Edit
+
+</button>
+
+
+
+<button
+
+class="delete"
+
+onclick="deleteWebsite(${site.index})">
+
+Delete
+
+</button>
+
+
+
+</div>
+
+
+`).join("")}
+
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+
+
+
+if(html===""){
+
+
+html=
+
+`
+
+<h3 style="text-align:center;color:#64748b">
+
+No Websites Found
+
+</h3>
+
+`;
+
+}
+
+
+
+
+document.getElementById("totalCount").innerHTML=
+
+"Total Websites : "+total;
+
+
+
+document.getElementById("categoryContainer").innerHTML=
+
+html;
+
+
+}
+
+
+
+
+
+
+
+
+// =============== EDIT ===============
+
+
+function editWebsite(index){
+
+
+
+document.getElementById("name").value=
+
+websites[index].name;
+
+
+
+document.getElementById("url").value=
+
+websites[index].url;
+
+
+
+document.getElementById("category").value=
+
+websites[index].category;
+
+
+
+editIndex=index;
+
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+// =============== DELETE ===============
+
+
+function deleteWebsite(index){
+
+
+
+if(confirm("Delete this website?")){
+
+
+websites.splice(index,1);
+
+
+
+localStorage.setItem(
+
+"websites",
+
+JSON.stringify(websites)
+
+);
+
+
+
+displayData();
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+// =============== CLEAR ===============
+
+
+function clearForm(){
+
+
+document.getElementById("name").value="";
+
+document.getElementById("url").value="";
+
+document.getElementById("category").selectedIndex=0;
+
+
+}
+
+
+
+
+
+
+
+
+// =============== LOGIN ===============
+
+
+function login(){
+
+
+
+let password=
+
+document.getElementById("password").value;
+
+
+
+if(password==="Ludo@88025"){
+
+
+
+// only current browser session
+
+sessionStorage.setItem(
+
+"loggedIn",
+
+"true"
+
+);
+
+
+
+openApp();
+
+
+}
+
+else{
+
+
+document.getElementById("error").innerHTML=
+
+"❌ Wrong Password";
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+// =============== OPEN APP ===============
+
+
+function openApp(){
+
+
+
+document.getElementById("loginPage")
+.style.display="none";
+
+
+
+document.getElementById("mainPage")
+.style.display="block";
+
+
+
+document.getElementById("error").innerHTML="";
+
+
+
+displayData();
+
+
+}
+
+
+
+
+
+
+
+
+// =============== LOGOUT ===============
+
+
+function logout(){
+
+
+sessionStorage.removeItem("loggedIn");
+
+
+
+document.getElementById("mainPage")
+.style.display="none";
+
+
+
+document.getElementById("loginPage")
+.style.display="flex";
+
+
+
+document.getElementById("password").value="";
+
+
+}
+
+
+
+
+
+
+
+
+// =============== PAGE LOAD ===============
+
+
+window.onload=function(){
+
+
+
+setTimeout(function(){
+
+
+
+document.getElementById("loader")
+.style.display="none";
+
+
+
+if(sessionStorage.getItem("loggedIn")==="true"){
+
+
+openApp();
+
+
+}
+
+else{
+
+
+document.getElementById("loginPage")
+.style.display="flex";
+
+
+}
+
+
+
+},1000);
+
+
+
+};
+
+
+</script>
+
+
+
+</body>
+
+</html>
